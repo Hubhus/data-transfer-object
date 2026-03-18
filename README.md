@@ -1,6 +1,8 @@
+Temporary workaround for PHP 8.5 deprecation warning.
+
 > **Warning**
 > We [have decided](https://stitcher.io/blog/deprecating-spatie-dto) to stop maintaining this package.
-> 
+>
 > Consider migrating to [spatie/laravel-data](https://spatie.be/docs/laravel-data) or [cuyz/valinor](https://github.com/cuyz/valinor).
 >
 > Feel free to fork our code and adapt it to your needs.
@@ -19,7 +21,7 @@ You can install the package via composer:
 composer require spatie/data-transfer-object
 ```
 
-* **Note**: v3 of this package only supports `php:^8.0`. If you're looking for the older version, check out [v2](https://github.com/spatie/data-transfer-object/tree/v2).
+- **Note**: v3 of this package only supports `php:^8.0`. If you're looking for the older version, check out [v2](https://github.com/spatie/data-transfer-object/tree/v2).
 
 ## Support us
 
@@ -40,17 +42,17 @@ use Spatie\DataTransferObject\DataTransferObject;
 class MyDTO extends DataTransferObject
 {
     public OtherDTO $otherDTO;
-    
+
     public OtherDTOCollection $collection;
-    
+
     #[CastWith(ComplexObjectCaster::class)]
     public ComplexObject $complexObject;
-    
+
     public ComplexObjectWithCast $complexObjectWithCast;
-    
+
     #[NumberBetween(1, 100)]
     public int $a;
-    
+
     #[MapFrom('address.city')]
     public string $city;
 }
@@ -180,7 +182,7 @@ It's possible to define default casters on a DTO class itself. These casters wil
 abstract class BaseDataTransferObject extends DataTransferObject
 {
     public MyEnum $status; // EnumCaster will be used
-    
+
     public DateTimeImmutable $date; // DateTimeImmutableCaster will be used
 }
 ```
@@ -197,7 +199,7 @@ For example:
     /** @var \Spatie\DataTransferObject\Tests\Foo[] */
     #[CastWith(ArrayCaster::class, itemType: Foo::class)]
     public array $collectionWithNamedArguments;
-    
+
     /** @var \Spatie\DataTransferObject\Tests\Foo[] */
     #[CastWith(ArrayCaster::class, Foo::class)]
     public array $collectionWithoutNamedArguments;
@@ -256,7 +258,7 @@ class PostDTO extends DataTransferObject
 {
     #[MapFrom('postTitle')]
     public string $title;
-    
+
     #[MapFrom('user.name')]
     public string $author;
 }
@@ -275,7 +277,7 @@ class UserDTO extends DataTransferObject
 
     #[MapFrom(0)]
     public string $firstName;
-    
+
     #[MapFrom(1)]
     public string $lastName;
 }
@@ -283,8 +285,8 @@ class UserDTO extends DataTransferObject
 $dto = new UserDTO(['John', 'Doe']);
 ```
 
-Sometimes you also want to map them during the transformation to Array. 
-A typical usecase would be transformation from camel case to snake case. 
+Sometimes you also want to map them during the transformation to Array.
+A typical usecase would be transformation from camel case to snake case.
 For that you can use the `#[MapTo]` attribute.
 
 ```php
@@ -294,7 +296,7 @@ class UserDTO extends DataTransferObject
     #[MapFrom(0)]
     #[MapTo('first_name')]
     public string $firstName;
-    
+
     #[MapFrom(1)]
     #[MapTo('last_name')]
     public string $lastName;
@@ -308,7 +310,6 @@ $dto->only('first_name')->toArray() // ['first_name' => 'John'];
 ## Strict DTOs
 
 The previous version of this package added the `FlexibleDataTransferObject` class which allowed you to ignore properties that didn't exist on the DTO. This behaviour has been changed, all DTOs are flexible now by default, but you can make them strict by using the `#[Strict]` attribute:
-
 
 ```php
 class NonStrictDto extends DataTransferObject
@@ -349,13 +350,13 @@ $postData->all();
 $postData
     ->only('title', 'body')
     ->toArray();
-    
+
 $postData
     ->except('author')
     ->toArray();
 ```
 
-Note that `all()` will simply return all properties, while `toArray()` will cast nested DTOs to arrays as well. 
+Note that `all()` will simply return all properties, while `toArray()` will cast nested DTOs to arrays as well.
 
 You can chain the `except()` and `only()` methods:
 
@@ -435,7 +436,7 @@ use Illuminate\Support\Collection;
 
 class CollectionOfFoo extends Collection
 {
-    // Add the correct return type here for static analyzers to know which type of array this is 
+    // Add the correct return type here for static analyzers to know which type of array this is
     public function offsetGet($key): Foo
     {
         return parent::offsetGet($key);
@@ -471,7 +472,7 @@ class Bar extends DataTransferObject
 
 ## Testing
 
-``` bash
+```bash
 composer test
 ```
 

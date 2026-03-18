@@ -59,7 +59,7 @@ class DataTransferObjectProperty
         );
 
         return array_map(
-            fn (ReflectionAttribute $attribute) => $attribute->newInstance(),
+            fn(ReflectionAttribute $attribute) => $attribute->newInstance(),
             $attributes
         );
     }
@@ -71,7 +71,11 @@ class DataTransferObjectProperty
 
     public function getDefaultValue(): mixed
     {
-        return $this->reflectionProperty->getDefaultValue();
+        if ($this->reflectionProperty->hasDefaultValue()) {
+            return $this->reflectionProperty->getDefaultValue();
+        }
+
+        return null;
     }
 
     private function resolveCaster(): ?Caster
@@ -90,7 +94,7 @@ class DataTransferObjectProperty
         $attribute = $attributes[0]->newInstance();
 
         return new $attribute->casterClass(
-            array_map(fn ($type) => $this->resolveTypeName($type), $this->extractTypes()),
+            array_map(fn($type) => $this->resolveTypeName($type), $this->extractTypes()),
             ...$attribute->args
         );
     }
